@@ -63,23 +63,21 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       const user = auth.currentUser;
       const userId = user ? user.uid : null;
       if (!userId) throw new Error("User not authenticated");
-      
+      const token = user && (await user.getIdToken());
       const response = await fetch(`${API_BASE_URL}/tasks`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ ...taskData, userId }),
       });
-      
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || "Failed to create task");
       }
-      
       const { task } = await response.json();
-      
-      // Add the new task to local state instead of refetching
       setTasks(prevTasks => [task, ...prevTasks]);
-      
       return task;
     } catch (error) {
       console.error("Error adding task:", error);
@@ -92,28 +90,25 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       const user = auth.currentUser;
       const userId = user ? user.uid : null;
       if (!userId) throw new Error("User not authenticated");
-      
+      const token = user && (await user.getIdToken());
       const createdTasks: Task[] = [];
-      
       for (const taskData of tasksData) {
         const response = await fetch(`${API_BASE_URL}/tasks`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ ...taskData, userId }),
         });
-        
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.error || "Failed to create one or more tasks");
         }
-        
         const { task } = await response.json();
         createdTasks.push(task);
       }
-      
-      // Add all new tasks to local state instead of refetching
       setTasks(prevTasks => [...createdTasks, ...prevTasks]);
-      
       return createdTasks;
     } catch (error) {
       console.error("Error adding multiple tasks:", error);
@@ -123,24 +118,25 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
 
   const updateTask = async (id: string, updates: Partial<Task>) => {
     try {
+      const user = auth.currentUser;
+      const token = user && (await user.getIdToken());
       const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(updates),
       });
-      
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || "Failed to update task");
       }
-      
-      // Update local state directly instead of refetching
       setTasks(prevTasks => 
         prevTasks.map(task => 
           task.id === id ? { ...task, ...updates } : task
         )
       );
-      
       return { success: true };
     } catch (error) {
       console.error("Error updating task:", error);
@@ -150,15 +146,17 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
 
   const deleteTask = async (id: string) => {
     try {
+      const user = auth.currentUser;
+      const token = user && (await user.getIdToken());
       const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
       if (!response.ok) {
         throw new Error("Failed to delete task");
       }
-      
-      // Refetch tasks after delete
       const updatedTasks = await fetchTasks();
       setTasks(updatedTasks);
     } catch (error) {
