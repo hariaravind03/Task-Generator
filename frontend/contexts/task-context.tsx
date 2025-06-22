@@ -33,7 +33,12 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     const user = auth.currentUser;
     const userId = user ? user.uid : null;
     if (!userId) return [];
-    const res = await fetch(`${API_BASE_URL}/tasks?userId=${userId}`);
+    const token = user && (await user.getIdToken());
+    const res = await fetch(`${API_BASE_URL}/tasks?userId=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!res.ok) throw new Error("Failed to fetch tasks");
     const data = await res.json();
     return data.tasks;
