@@ -7,6 +7,7 @@ const { client, db } = require("./db");
 const tasksRouter = require("./routes/tasks");
 const generateTasksRouter = require("./routes/generate-tasks");
 const healthRouter = require("./routes/health");
+const docsRouter = require("./routes/docs");
 
 async function startServer() {
   try {
@@ -37,6 +38,7 @@ async function startServer() {
   app.use("/api/health", healthRouter);
   app.use("/api/generate-tasks", generateTasksRouter);
   app.use("/api/tasks", tasksRouter);
+  app.use("/api/docs", docsRouter);
 
   const PORT = process.env.PORT || 4000;
   http.createServer(app).listen(PORT, () => {

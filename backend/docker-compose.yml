@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}
+      - PORT=4000
+      - FRONTEND_URL=${FRONTEND_URL}
+      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
+    volumes:
+      - .:/app
+    restart: unless-stopped 
