@@ -18,12 +18,19 @@ async function startServer() {
   }
 
   const app = express();
-  app.use(cors({
-    origin: process.env.FRONTEND_URL, // your Vercel frontend domain
+
+  const corsOptions = {
+    origin: process.env.FRONTEND_URL, // e.g. "https://task-generator-rho.vercel.app"
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  }));
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  };
+
+  app.use(cors(corsOptions));
+  app.options("*", cors(corsOptions));
+
   app.use(express.json());
 
   app.use("/api/health", healthRouter);
