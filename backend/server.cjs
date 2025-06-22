@@ -3,6 +3,13 @@ const cors = require("cors");
 const http = require("http");
 require('dotenv/config');
 
+const cors = require("cors");
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL, // your Vercel frontend domain
+  credentials: true // if you use cookies/auth
+}));
+
 const { client, db } = require("./db");
 const tasksRouter = require("./routes/tasks");
 const generateTasksRouter = require("./routes/generate-tasks");
