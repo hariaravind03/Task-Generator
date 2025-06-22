@@ -3,8 +3,13 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect()
+  try {
+    if (isProtectedRoute(req)) {
+      await auth.protect()
+    }
+  } catch (error) {
+    console.error('Middleware error:', error)
+    return new Response('Internal Server Error', { status: 500 })
   }
 })
 
