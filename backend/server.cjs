@@ -20,9 +20,9 @@ async function startServer() {
 
   const app = express();
 
-  // Allow all origins for debugging
+  // Allow only the deployed frontend origin for CORS
   const corsOptions = {
-    origin: "*",
+    origin: ["https://task-generator-rho.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
