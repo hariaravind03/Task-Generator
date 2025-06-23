@@ -34,12 +34,12 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-row justify-between items-center gap-4">
         <div className="flex items-center space-x-2">
           <Brain className="h-8 w-8 text-blue-600" />
           <h1 className="text-2xl font-bold text-gray-900">TaskGen</h1>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 ml-auto">
           <Link href="/dashboard">
             <Button className="w-full sm:w-auto">Dashboard</Button>
           </Link>
@@ -169,7 +169,7 @@ export default function HomePage() {
           </div>
           <div className="flex gap-4 mb-2">
             <Button asChild variant="ghost" size="icon" className="hover:bg-blue-100">
-              <a href="https://github.com/your-repo" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <a href="https://github.com/hariaravind03" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <Github className="h-5 w-5 text-gray-700 hover:text-blue-600 transition" />
               </a>
             </Button>
@@ -179,7 +179,7 @@ export default function HomePage() {
               </a>
             </Button>
             <Button asChild variant="ghost" size="icon" className="hover:bg-blue-100">
-              <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/hari-aravind-a-0a703925a/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5 text-gray-700 hover:text-blue-600 transition" />
               </a>
             </Button>
