@@ -1,6 +1,6 @@
 const express = require('express');
 const { db, tasksTable } = require('../db');
-const { desc, eq } = require("drizzle-orm");
+const { desc, eq, and } = require("drizzle-orm");
 const verifyFirebaseToken = require("../middleware/auth");
 
 const router = express.Router();
@@ -61,8 +61,7 @@ router.put('/:id', async (req, res) => {
         ...updates, 
         updatedAt: new Date() 
       })
-      .where(eq(tasksTable.id, id))
-      .where(eq(tasksTable.userId, userId))
+      .where(and(eq(tasksTable.id, id), eq(tasksTable.userId, userId)))
       .returning();
     if (!updatedTask) {
       return res.status(404).json({ error: "Task not found" });
