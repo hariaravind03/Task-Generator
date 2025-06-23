@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/placeholder-logo.png" sizes="32x32" type="image/png" />
+        <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
       </head>
       <body className={inter.className}>
         <TaskProvider>
