@@ -66,7 +66,7 @@ export default function DashboardPage() {
             {/* App name/logo - centered */}
             <div className="flex flex-col items-center justify-center flex-1">
               <div className="flex items-center space-x-2">
-                <Brain className="h-7 w-7 sm:h-8 sm:w-8 text-blue-600" />
+                <img src="/placeholder-logo.png" alt="TaskGen Logo" className="h-12 w-12" />
                 <h1 className="text-lg sm:text-xl font-bold text-gray-900 text-center">TaskGen Dashboard</h1>
               </div>
             </div>

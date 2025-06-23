@@ -36,7 +36,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-row justify-between items-center gap-4">
         <div className="flex items-center space-x-2">
-          <Brain className="h-8 w-8 text-blue-600" />
+          <img src="/placeholder-logo.png" alt="TaskGen Logo" className="h-12 w-12" />
           <h1 className="text-2xl font-bold text-gray-900">TaskGen</h1>
         </div>
         <div className="flex items-center space-x-4 ml-auto">
@@ -106,7 +106,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-12 sm:mb-16">
           <Card className="text-center">
             <CardHeader>
-              <Brain className="h-10 w-10 sm:h-12 sm:w-12 text-blue-600 mx-auto mb-4" />
+              <img src="/placeholder-logo.png" alt="AI-Generated Tasks" className="h-16 w-16 sm:h-20 sm:w-20 mx-auto mb-4" />
               <CardTitle className="text-lg sm:text-xl md:text-2xl">AI-Generated Tasks</CardTitle>
               <CardDescription className="text-sm sm:text-base">
                 Get 5 personalized, actionable tasks for any topic using Google Gemini AI
@@ -164,7 +164,7 @@ export default function HomePage() {
         <Separator className="mb-4" />
         <div className="container mx-auto flex flex-col items-center justify-center py-8 gap-3">
           <div className="flex items-center gap-2 mb-1">
-            <Brain className="h-6 w-6 text-blue-600" />
+            <img src="/placeholder-logo.png" alt="TaskGen Logo" className="h-10 w-10" />
             <span className="font-bold text-lg text-gray-800">TaskGen</span>
           </div>
           <div className="flex gap-4 mb-2">
