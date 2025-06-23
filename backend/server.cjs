@@ -3,7 +3,7 @@ const cors = require("cors");
 const http = require("http");
 require('dotenv/config');
 
-const { client, db } = require("./db");
+const { pool, db } = require("./db");
 const tasksRouter = require("./routes/tasks");
 const generateTasksRouter = require("./routes/generate-tasks");
 const healthRouter = require("./routes/health");
@@ -11,12 +11,17 @@ const docsRouter = require("./routes/docs");
 
 async function startServer() {
   try {
-    await client.connect();
+    await pool.connect();
     console.log("✅ Connected to Postgres database!");
   } catch (err) {
     console.error("❌ Failed to connect to Postgres database:", err.message);
     process.exit(1);
   }
+
+  pool.on('error', (err) => {
+    console.error('Unexpected error on idle Postgres client', err);
+    // Optionally: process.exit(-1);
+  });
 
   const app = express();
 

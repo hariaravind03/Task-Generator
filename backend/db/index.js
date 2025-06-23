@@ -1,10 +1,11 @@
 const { drizzle } = require("drizzle-orm/node-postgres");
-const { Client } = require("pg");
+const { Pool } = require("pg");
 const { pgTable, uuid, text, boolean, timestamp } = require("drizzle-orm/pg-core");
 require('dotenv/config');
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  // Optional: max: 10, idleTimeoutMillis: 30000
 });
 
 const tasksTable = pgTable("tasks", {
@@ -18,6 +19,6 @@ const tasksTable = pgTable("tasks", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
-const db = drizzle(client);
+const db = drizzle(pool);
 
-module.exports = { client, db, tasksTable }; 
+module.exports = { pool, db, tasksTable }; 
