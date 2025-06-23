@@ -6,7 +6,7 @@ import { TaskGenerator } from "@/components/task-generator"
 import { TaskList } from "@/components/task-list"
 import { ProgressDashboard } from "@/components/progress-dashboard"
 import { TaskProvider } from "@/contexts/task-context"
-import { Brain, User, LogOut, Home, ArrowLeft } from "lucide-react"
+import { Brain, User, LogOut, Home, ArrowLeft, Menu } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
@@ -44,7 +44,14 @@ export default function DashboardPage() {
   }
 
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center">Loading...</div>
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="text-sm text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   if (!user) {
@@ -54,75 +61,126 @@ export default function DashboardPage() {
   return (
     <TaskProvider>
       <div className="min-h-screen bg-gray-50">
-        <header className="bg-white shadow-sm border-b">
-          <div className="container mx-auto px-2 sm:px-4 lg:px-8 py-3 relative flex items-center justify-center min-h-[64px]">
-            {/* Back button - left on mobile */}
-            <div className="absolute left-2 top-1/2 -translate-y-1/2 sm:static sm:translate-y-0 flex items-center">
-              <Button variant="outline" className="w-10 h-10 p-0 sm:w-auto sm:h-auto sm:mr-2" onClick={() => router.back()}>
-                <ArrowLeft className="h-4 w-4 mr-0 sm:mr-1" />
-                <span className="hidden sm:inline">Back</span>
-              </Button>
-            </div>
-            {/* App name/logo - centered */}
-            <div className="flex flex-col items-center justify-center flex-1">
-              <div className="flex items-center space-x-2">
-                <img src="/placeholder-logo.png" alt="TaskGen Logo" className="h-12 w-12" />
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900 text-center">TaskGen Dashboard</h1>
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b sticky top-0 z-50">
+          <div className="container mx-auto px-3 sm:px-4 lg:px-8 py-3">
+            <div className="flex items-center justify-between">
+              {/* Left section - Back button */}
+              <div className="flex items-center space-x-2 min-w-0">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="flex-shrink-0 h-9 w-9 p-0 sm:w-auto sm:px-3" 
+                  onClick={() => router.back()}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span className="hidden sm:ml-2 sm:inline">Back</span>
+                </Button>
               </div>
-            </div>
-            {/* Avatar - right on mobile */}
-            <div className="absolute right-2 top-2 sm:static sm:ml-4 flex items-center">
-              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                <SheetTrigger asChild>
-                  <Avatar className="cursor-pointer w-9 h-9 sm:w-12 sm:h-12">
-                    <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User Avatar"} />
-                    <AvatarFallback>
-                      {user?.displayName?.charAt(0) || <User />}
-                    </AvatarFallback>
-                  </Avatar>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>My Account</SheetTitle>
-                  </SheetHeader>
-                  <div className="py-4 space-y-4">
-                    {user && (
-                      <div className="text-center space-y-2">
-                        <Avatar className="h-14 w-14 sm:h-20 sm:w-20 mx-auto">
-                          <AvatarImage src={user.photoURL || ""} alt={user.displayName || "User avatar"} />
-                          <AvatarFallback>{user.displayName?.charAt(0) || <User />}</AvatarFallback>
-                        </Avatar>
-                        <h2 className="text-base sm:text-lg font-semibold">{user.displayName}</h2>
-                        <p className="text-xs sm:text-sm text-gray-500">{user.email}</p>
+
+              {/* Center section - Logo and title */}
+              <div className="flex items-center space-x-2 flex-1 justify-center min-w-0">
+                <div className="flex-shrink-0">
+                  <img 
+                    src="/placeholder-logo.png" 
+                    alt="TaskGen Logo" 
+                    className="h-8 w-8 sm:h-10 sm:w-10" 
+                  />
+                </div>
+                <h1 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 truncate">
+                  <span className="hidden xs:inline">TaskGen </span>Dashboard
+                </h1>
+              </div>
+
+              {/* Right section - User avatar */}
+              <div className="flex items-center min-w-0">
+                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" className="p-1 h-auto rounded-full">
+                      <Avatar className="h-8 w-8 sm:h-9 sm:w-9">
+                        <AvatarImage 
+                          src={user?.photoURL || ""} 
+                          alt={user?.displayName || "User Avatar"} 
+                        />
+                        <AvatarFallback className="text-xs">
+                          {user?.displayName?.charAt(0) || <User className="h-4 w-4" />}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="w-[280px] sm:w-[320px]">
+                    <SheetHeader>
+                      <SheetTitle>My Account</SheetTitle>
+                    </SheetHeader>
+                    <div className="py-6 space-y-6">
+                      {user && (
+                        <div className="text-center space-y-3">
+                          <Avatar className="h-16 w-16 sm:h-20 sm:w-20 mx-auto">
+                            <AvatarImage 
+                              src={user.photoURL || ""} 
+                              alt={user.displayName || "User avatar"} 
+                            />
+                            <AvatarFallback className="text-lg">
+                              {user.displayName?.charAt(0) || <User className="h-8 w-8" />}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="space-y-1">
+                            <h2 className="text-lg font-semibold truncate px-2">
+                              {user.displayName || "User"}
+                            </h2>
+                            <p className="text-sm text-gray-500 truncate px-2">
+                              {user.email}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      <div className="space-y-2">
+                        <Button 
+                          asChild 
+                          variant="ghost" 
+                          className="w-full justify-start h-11"
+                        >
+                          <Link href="/" onClick={() => setIsSheetOpen(false)}>
+                            <Home className="mr-3 h-4 w-4" />
+                            Main Page
+                          </Link>
+                        </Button>
+                        <Button 
+                          onClick={handleLogout} 
+                          variant="ghost" 
+                          className="w-full justify-start h-11 text-red-500 hover:text-red-600 hover:bg-red-50"
+                        >
+                          <LogOut className="mr-3 h-4 w-4" />
+                          Logout
+                        </Button>
                       </div>
-                    )}
-                    <div className="space-y-2">
-                      <Button asChild variant="ghost" className="w-full justify-start">
-                        <Link href="/" onClick={() => setIsSheetOpen(false)}>
-                          <Home className="mr-2 h-4 w-4" />
-                          Main Page
-                        </Link>
-                      </Button>
-                      <Button onClick={handleLogout} variant="ghost" className="w-full justify-start text-red-500 hover:text-red-600">
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Logout
-                      </Button>
                     </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
+                  </SheetContent>
+                </Sheet>
+              </div>
             </div>
           </div>
         </header>
 
-        <main className="container mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <div className="space-y-8 lg:col-span-2">
-              <TaskGenerator />
-              <TaskList />
+        {/* Main content */}
+        <main className="container mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+          {/* Mobile-first grid layout */}
+          <div className="space-y-6 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-8">
+            {/* Main content area */}
+            <div className="space-y-6 lg:col-span-8 xl:col-span-9">
+              <div className="w-full">
+                <TaskGenerator />
+              </div>
+              <div className="w-full">
+                <TaskList />
+              </div>
             </div>
-            <div>
-              <ProgressDashboard />
+            
+            {/* Sidebar */}
+            <div className="lg:col-span-4 xl:col-span-3">
+              <div className="sticky top-20">
+                <ProgressDashboard />
+              </div>
             </div>
           </div>
         </main>
