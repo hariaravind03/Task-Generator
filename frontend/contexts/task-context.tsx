@@ -32,8 +32,9 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   async function fetchTasks() {
     const user = auth.currentUser;
     const userId = user ? user.uid : null;
-    if (!userId) return [];
-    const token = user && (await user.getIdToken());
+    if (!userId || !user) return [];
+    await user.reload();
+    const token = await user.getIdToken();
     const res = await fetch(`${API_BASE_URL}/tasks?userId=${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,8 +68,9 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     try {
       const user = auth.currentUser;
       const userId = user ? user.uid : null;
-      if (!userId) throw new Error("User not authenticated");
-      const token = user && (await user.getIdToken());
+      if (!userId || !user) throw new Error("User not authenticated");
+      await user.reload();
+      const token = await user.getIdToken();
       const response = await fetch(`${API_BASE_URL}/tasks`, {
         method: "POST",
         headers: {
@@ -94,8 +96,9 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     try {
       const user = auth.currentUser;
       const userId = user ? user.uid : null;
-      if (!userId) throw new Error("User not authenticated");
-      const token = user && (await user.getIdToken());
+      if (!userId || !user) throw new Error("User not authenticated");
+      await user.reload();
+      const token = await user.getIdToken();
       const createdTasks: Task[] = [];
       for (const taskData of tasksData) {
         const response = await fetch(`${API_BASE_URL}/tasks`, {
@@ -124,7 +127,9 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   const updateTask = async (id: string, updates: Partial<Task>) => {
     try {
       const user = auth.currentUser;
-      const token = user && (await user.getIdToken());
+      if (!user) throw new Error("User not authenticated");
+      await user.reload();
+      const token = await user.getIdToken();
       const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: "PUT",
         headers: {
@@ -152,7 +157,9 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   const deleteTask = async (id: string) => {
     try {
       const user = auth.currentUser;
-      const token = user && (await user.getIdToken());
+      if (!user) throw new Error("User not authenticated");
+      await user.reload();
+      const token = await user.getIdToken();
       const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: "DELETE",
         headers: {
