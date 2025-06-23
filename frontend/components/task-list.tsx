@@ -58,10 +58,10 @@ export function TaskList() {
     })
   }
 
-  const handleUpdateTask = () => {
+  const handleUpdateTask = async () => {
     if (!editingTask || !newTaskTitle.trim()) return
 
-    updateTask(editingTask.id, {
+    await updateTask(editingTask.id, {
       title: newTaskTitle,
       category: newTaskCategory,
     })
