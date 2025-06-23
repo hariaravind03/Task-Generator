@@ -85,12 +85,11 @@ router.delete('/:id', async (req, res) => {
     const [existingTask] = await db
       .select()
       .from(tasksTable)
-      .where(eq(tasksTable.id, id))
-      .where(eq(tasksTable.userId, userId));
+      .where(and(eq(tasksTable.id, id), eq(tasksTable.userId, userId)));
     if (!existingTask) {
       return res.status(404).json({ error: "Task not found" });
     }
-    await db.delete(tasksTable).where(eq(tasksTable.id, id)).where(eq(tasksTable.userId, userId));
+    await db.delete(tasksTable).where(and(eq(tasksTable.id, id), eq(tasksTable.userId, userId)));
     res.json({ success: true, message: "Task deleted successfully" });
   } catch (error) {
     console.error("Error deleting task:", error);
