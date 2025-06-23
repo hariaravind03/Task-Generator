@@ -222,7 +222,7 @@ export function TaskList() {
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Dialog>
+                    <Dialog open={!!editingTask} onOpenChange={open => { if (!open) setEditingTask(null); }}>
                       <DialogTrigger asChild>
                         <Button
                           variant="ghost"
