@@ -103,7 +103,11 @@ export default function LoginPage() {
               <CardContent className="p-8 space-y-6">
                 <div className="text-center space-y-2">
                   <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Brain className="w-8 h-8 text-blue-600" />
+                    <img
+                      src="/placeholder-logo.png"
+                      alt="TaskGen Logo"
+                      className="w-10 h-10 object-contain"
+                    />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900">Sign in to TaskGen</h2>
                   <p className="text-gray-600">Sign in to continue your journey</p>
