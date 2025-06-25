@@ -4,6 +4,8 @@ services:
     build: .
     ports:
       - "4000:4000"
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}

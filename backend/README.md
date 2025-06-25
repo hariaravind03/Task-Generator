@@ -6,6 +6,8 @@ Copy `.env.example` to `.env` and fill in your production values:
 DATABASE_URL=your_production_database_url
 GOOGLE_AI_API_KEY=your_google_gemini_api_key
 PORT=4000
+FRONTEND_URL=https://your-frontend-url.com
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
 ```
 
 ## Production Start
