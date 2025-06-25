@@ -9,10 +9,20 @@ const generateTasksRouter = require("./routes/generate-tasks");
 const healthRouter = require("./routes/health");
 const docsRouter = require("./routes/docs");
 
+// Global error handlers
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
 async function startServer() {
   try {
-    await pool.connect();
-    console.log("✅ Connected to Postgres database!");
+    console.log("✅ Ready to connect to Postgres database!");
   } catch (err) {
     console.error("❌ Failed to connect to Postgres database:", err.message);
     process.exit(1);
@@ -44,6 +54,12 @@ async function startServer() {
   app.use("/api/generate-tasks", generateTasksRouter);
   app.use("/api/tasks", tasksRouter);
   app.use("/api/docs", docsRouter);
+
+  // Express error-handling middleware (should be after all routes)
+  app.use((err, req, res, next) => {
+    console.error('Express error handler:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  });
 
   const PORT = process.env.PORT || 4000;
   http.createServer(app).listen(PORT, () => {
